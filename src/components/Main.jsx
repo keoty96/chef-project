@@ -1,5 +1,8 @@
+import Practice from "./Practice";
+import React, { useEffect, useState } from "react";
+
 export default function Main() {
-    const ingredients = ["Chicken", "Oregano", "Tomatoes"]
+    const [ingredients, setIngredients] = useState([])
 
     const ingredientsListItems = ingredients.map(ingredient => {
         return (
@@ -7,13 +10,16 @@ export default function Main() {
         )
     })
 
+    useEffect(() => {console.log(ingredients)}, [ingredients])
+
     function handleSubmit(event) {
         event.preventDefault();
-        console.log("Form submitted");
         const formData = new FormData(event.currentTarget);
         const newIngredient = formData.get("ingredient")
-        ingredients.push(newIngredient);
-        console.log(ingredients)
+
+        setIngredients(prevState => [...prevState, newIngredient]);
+
+        document.querySelector('input[name="ingredient"').value = "";
     }
 
     return(
