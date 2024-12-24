@@ -14,8 +14,9 @@ export default function Main() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const newIngredient = formData.get("ingredient")
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        const newIngredient = data.ingredient;
 
         setIngredients(prevState => [...prevState, newIngredient]);
 
