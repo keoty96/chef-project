@@ -2,10 +2,11 @@ import Practice from "./Practice";
 import React, { useEffect, useState } from "react";
 import IngredientList from "./IngredientList";
 import ClaudeRecipe from "./ClaudeRecipe";
+import {getRecipeFromMistral} from "../ai";
 
 export default function Main() {
     const [ingredients, setIngredients] = useState([]);
-   const [recipeShown, setRecipeShown] = useState(false);
+   const [recipe, setRecipe] = useState("");
 
     const ingredientsListItems = ingredients.map(ingredient => {
         return (
@@ -24,10 +25,12 @@ export default function Main() {
         setIngredients(prevState => [...prevState, newIngredient]);
 
         document.querySelector('input[name="ingredient"').value = "";
+
     }
 
-    function handleRecipeShown() {
-        setRecipeShown(prevState => prevState = true);
+    async function getRecipe() {
+        const result = await getRecipeFromMistral(ingredients);
+        setRecipe(result);
     }
 
     return(
@@ -45,10 +48,10 @@ export default function Main() {
             <IngredientList 
             ingredients = {ingredients} 
             items = {ingredientsListItems}
-            handleRecipeShown = {handleRecipeShown}
+            getRecipe = {getRecipe}
             />
             }
-            { recipeShown && <ClaudeRecipe />}
+            { recipe && <ClaudeRecipe recipe={recipe} />}
         </main>
     )
 }
